@@ -1,0 +1,24 @@
+{
+  "name": "amion-exponent",
+  "version": "0.0.0",
+  "description": "Hello Exponent!",
+  "author": null,
+  "main": "main.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-exponent"
+  },
+  "dependencies": {
+    "@exponent/ex-navigation": "~2.7.0",
+    "@exponent/samples": "~1.0.2",
+    "@exponent/vector-icons": "~4.0.0",
+    "exponent": "^13.1.0",
+    "react": "~15.4.0",
+    "react-native": "https://github.com/exponent/react-native/archive/sdk-13.0.3.tar.gz"
+  },
+  "devDependencies": {
+    "jest-exponent": "~0.2.0"
+  }
+}
