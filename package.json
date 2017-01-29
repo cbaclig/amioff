@@ -15,10 +15,17 @@
     "@exponent/samples": "~1.0.2",
     "@exponent/vector-icons": "~4.0.0",
     "exponent": "^13.1.0",
+    "moment": "^2.17.1",
     "react": "~15.4.0",
     "react-native": "https://github.com/exponent/react-native/archive/sdk-13.0.3.tar.gz"
   },
   "devDependencies": {
+    "babel-eslint": "^7.1.1",
+    "eslint": "^3.14.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
     "jest-exponent": "~0.2.0"
   }
 }
