@@ -1,0 +1,10 @@
+{
+  "exponentServerPort": 19000,
+  "packagerPort": 19001,
+  "packagerPid": 1846,
+  "exponentServerNgrokUrl": null,
+  "packagerNgrokUrl": "https://packager.5q-p8r.cbaclig.amion-exponent.exp.direct",
+  "ngrokPid": 1857,
+  "expoServerPort": 19000,
+  "expoServerNgrokUrl": "https://5q-p8r.cbaclig.amion-exponent.exp.direct"
+}

@@ -2,6 +2,7 @@ import Exponent from 'exponent';
 import React from 'react';
 import moment from 'moment';
 import {
+  Platform,
   StatusBar,
   StyleSheet,
   View,
@@ -11,6 +12,12 @@ import {
   Text,
   ListView,
 } from 'react-native';
+import {
+  people,
+  schedule,
+} from './data.json';
+import EventRow from './components/eventRow';
+
 // import {
 //   NavigationProvider,
 //   StackNavigation,
@@ -32,7 +39,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
   toolbar: {
-    marginTop: StatusBar.currentHeight, // android Only
     backgroundColor: '#e9eaed',
     height: 56,
   },
@@ -46,11 +52,14 @@ class AppContainer extends React.Component {
     this._openDateSelector = this._openDateSelector.bind(this);
 
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+    const date = new Date();
+
     this.state = {
       appIsReady: false,
-      dataSource: ds.cloneWithRows([
-        'John', 'Joel', 'James', 'Jimmy', 'Jackson', 'Jillian', 'Julie', 'Devin',
-      ]),
+      people,
+      schedule,
+      date,
+      dataSource: ds.cloneWithRows(schedule[moment(date).format('YYYY-MM-DD')]),
     };
   }
 
@@ -83,33 +92,30 @@ class AppContainer extends React.Component {
   async _openDateSelector() {
     try {
       const { action, year, month, day } = await DatePickerAndroid.open({
-        date: new Date(),
+        date: this.state.date,
       });
 
       if (action !== DatePickerAndroid.dismissedAction) {
-        this.setState({ date: new Date(year, month, day) });
-        this._updateList();
+        const date = new Date(year, month, day);
+        this.setState({
+          date,
+          dataSource: this.state.dataSource.cloneWithRows(schedule[moment(date).format('YYYY-MM-DD')]),
+        });
       }
     } catch ({ code, message }) {
       console.warn('Cannot open date picker', message);
     }
   }
 
-  _updateList() {
-    this.setState({
-      dataSource: this.state.dataSource.cloneWithRows([
-        moment(this.state.date).format('Ymd !!!'),
-      ]),
-    });
-  }
-
   render() {
     if (this.state.appIsReady) {
       return (
         <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
+
           <ToolbarAndroid
             style={styles.toolbar}
-            actions={[{ title: 'Settings', show: 'always' }]}
           >
             <TouchableNativeFeedback
               onPress={this._openDateSelector}
@@ -123,20 +129,23 @@ class AppContainer extends React.Component {
 
           <ListView
             dataSource={this.state.dataSource}
-            renderRow={rowData => <Text>{rowData} {moment(this.state.date).format('MM D, YY')}</Text>}
+            renderRow={rowData => (
+              <EventRow
+                eventName={rowData.eventName}
+                person={this.state.people[rowData.personId]}
+              />
+            )}
           />
 
           {/*
           <NavigationProvider router={Router}>
             <StackNavigation id="root" initialRoute={Router.getRoute('rootNavigation')} />
           </NavigationProvider>
-
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
           */}
         </View>
       );
     }
+
     return (
       <Exponent.Components.AppLoading />
     );
